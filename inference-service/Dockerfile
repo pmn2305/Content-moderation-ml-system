@@ -21,5 +21,5 @@ RUN poetry install --no-interaction --no-ansi --only main
 COPY . .
 
 EXPOSE 8000
+CMD ["sh", "-c", "uvicorn app:app --host 0.0.0.0 --port $PORT"]
 
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
