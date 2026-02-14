@@ -9,10 +9,11 @@ package-mode = false
 python = ">=3.10,<3.13"
 fastapi = "^0.110.0"
 uvicorn = "^0.29.0"
-transformers = "^4.40.0"
+transformers = "^4.38.2"
 torch = { version = "2.2.2", source = "pytorch-cpu" }
 pillow = "^10.0.0"
 python-multipart = "^0.0.22"
+numpy = "<2"
 
 [build-system]
 requires = ["poetry-core"]
