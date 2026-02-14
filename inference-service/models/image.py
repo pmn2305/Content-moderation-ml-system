@@ -6,36 +6,21 @@ import io
 class ImageModerationModel:
     def __init__(self):
         self.pipe = pipeline(
-            "image-classification",
-            model="Falconsai/nsfw_image_detection"
+            task="image-classification",
+            model="Falconsai/nsfw_image_detection",
+            top_k=None  # important
         )
         self.model_version = "nsfw-vit-v1"
-
-        # Labels considered unsafe
         self.NSFW_LABELS = {"porn", "sexy", "hentai", "nsfw"}
 
     def predict(self, image_bytes: bytes) -> dict:
-        """
-        Accepts raw image bytes.
-        Converts to PIL.Image internally.
-        Returns:
-        {
-            "score": float,
-            "model_version": str
-        }
-        """
-
         try:
-            # Convert bytes -> PIL Image
             image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
         except Exception as e:
             raise ValueError(f"Invalid image file: {str(e)}")
 
-        # Run inference
-        outputs = self.pipe(image)
-
-        # Debug (optional — remove in production)
-        print("model outputs:", outputs)
+        # wrap image in list to avoid tensor shape mismatch
+        outputs = self.pipe([image])[0]
 
         nsfw_score = 0.0
 
