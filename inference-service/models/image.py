@@ -1,16 +1,18 @@
-from transformers import pipeline
+from transformers import AutoImageProcessor, AutoModelForImageClassification
 from PIL import Image
+import torch
 import io
 
 
 class ImageModerationModel:
     def __init__(self):
-        self.pipe = pipeline(
-            task="image-classification",
-            model="Falconsai/nsfw_image_detection",
-            top_k=None  # important
-        )
+        self.model_name = "Falconsai/nsfw_image_detection"
+        self.processor = AutoImageProcessor.from_pretrained(self.model_name)
+        self.model = AutoModelForImageClassification.from_pretrained(self.model_name)
+
+        self.model.eval()
         self.model_version = "nsfw-vit-v1"
+
         self.NSFW_LABELS = {"porn", "sexy", "hentai", "nsfw"}
 
     def predict(self, image_bytes: bytes) -> dict:
@@ -19,14 +21,24 @@ class ImageModerationModel:
         except Exception as e:
             raise ValueError(f"Invalid image file: {str(e)}")
 
-        # wrap image in list to avoid tensor shape mismatch
-        outputs = self.pipe([image])[0]
+        # Preprocess
+        inputs = self.processor(images=image, return_tensors="pt")
+
+        with torch.no_grad():
+            outputs = self.model(**inputs)
+
+        logits = outputs.logits
+        probs = torch.softmax(logits, dim=1)[0]
+
+        # Get labels
+        id2label = self.model.config.id2label
 
         nsfw_score = 0.0
 
-        for out in outputs:
-            if out["label"].lower() in self.NSFW_LABELS:
-                nsfw_score = float(out["score"])
+        for idx, prob in enumerate(probs):
+            label = id2label[idx].lower()
+            if label in self.NSFW_LABELS:
+                nsfw_score = float(prob.item())
                 break
 
         return {
