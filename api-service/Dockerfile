@@ -13,4 +13,5 @@ RUN poetry install --no-interaction --no-ansi --only main
 
 COPY . .
 
-CMD ["sh", "-c", "uvicorn app:app --host 0.0.0.0 --port $PORT"]
+CMD ["sh", "-c", "uvicorn src.serving.main:app --host 0.0.0.0 --port $PORT"]
+
