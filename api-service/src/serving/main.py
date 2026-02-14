@@ -25,6 +25,13 @@ app.add_middleware(
 
 INFERENCE_BASE_URL = os.getenv("INFERENCE_URL", "http://localhost:8001")
 
+redis_url = os.getenv("REDIS_URL")
+
+if redis_url:
+    redis_client = redis.Redis.from_url(redis_url, decode_responses=True)
+else:
+    redis_client = None
+
 redis_client = redis.Redis(
     host="localhost",
     port=6379,
