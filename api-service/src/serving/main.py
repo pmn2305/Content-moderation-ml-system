@@ -22,7 +22,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-INFERENCE_BASE_URL = "http://localhost:8001"
+INFERENCE_BASE_URL = os.getenv("INFERENCE_URL", "http://localhost:8001")
 
 redis_client = redis.Redis(
     host="localhost",
