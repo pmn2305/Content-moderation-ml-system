@@ -15,6 +15,7 @@ class ImageModerationModel:
 
     def predict(self, image_bytes: bytes) -> dict:
         print(" NEW LIGHT MODEL RUNNING ")
+        print("Image byte length:", len(image_bytes))
 
         try:
             image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
