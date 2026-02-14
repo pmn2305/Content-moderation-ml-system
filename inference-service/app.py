@@ -2,6 +2,15 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from pydantic import BaseModel
 from models.text import TextModerationModel
 from models.image import ImageModerationModel
+import torch
+import transformers
+import sys
+
+print("===== ENV INFO =====")
+print("PYTHON:", sys.version)
+print("TORCH:", torch.__version__)
+print("TRANSFORMERS:", transformers.__version__)
+print("====================")
 
 app = FastAPI(title="Inference Service")
 
