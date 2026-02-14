@@ -79,7 +79,7 @@ def rate_limit_key(ip: str) -> str:
     return f"rate:{ip}"
 
 async def infer_text(text: str) -> dict:
-    async with httpx.AsyncClient(timeout=5.0) as client:
+    async with httpx.AsyncClient(timeout=20.0) as client:
         resp = await client.post(
             f"{INFERENCE_BASE_URL}/infer/text",
             json={"text": text}
