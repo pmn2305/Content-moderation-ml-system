@@ -1,3 +1,4 @@
 python-3.12.2
+transformers==4.38.2
 numpy<2
 
