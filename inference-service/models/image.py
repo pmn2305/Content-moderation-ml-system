@@ -16,6 +16,8 @@ class ImageModerationModel:
         self.NSFW_LABELS = {"porn", "sexy", "hentai", "nsfw"}
 
     def predict(self, image_bytes: bytes) -> dict:
+        print(" NEW IMAGE MODEL CODE RUNNING ")
+
         try:
             image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
         except Exception as e:
