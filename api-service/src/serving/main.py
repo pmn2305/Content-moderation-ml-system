@@ -92,7 +92,7 @@ async def infer_image(image_bytes: bytes | None, filename: str | None = None):
     if not image_bytes:
         return None
 
-    async with httpx.AsyncClient(timeout=5.0) as client:
+    async with httpx.AsyncClient(timeout=20.0) as client:
         resp = await client.post(
             f"{INFERENCE_BASE_URL}/infer/image",
             files={
