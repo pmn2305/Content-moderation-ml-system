@@ -2,10 +2,6 @@
 
 AI-powered content moderation system with real-time text and image analysis.
 
-## 🚀 Live Demo
-
-**[👉 Try it here](https://content-moderation-ml.vercel.app)**
-
 ## 🏗️ Architecture
 
 - **Frontend**: React 19 + Vite + TailwindCSS (Vercel)
